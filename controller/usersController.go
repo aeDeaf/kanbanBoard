@@ -11,6 +11,10 @@ import (
 
 var GetUsers = func(w http.ResponseWriter, r *http.Request) {
 	users := database.GetUsers()
+	for i := 0; i < len(users); i++ {
+		users[i].Password = ""
+	}
+
 	resp := utils.Message(true, "Get users")
 	resp["users"] = users
 	utils.Respond(w, resp)
@@ -20,6 +24,7 @@ var GetUser = func(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	login := params["login"]
 	user := database.GetUserByLogin(login)
+	user.Password = ""
 
 	resp := utils.Message(true, "Get user: "+login)
 	resp["user"] = user

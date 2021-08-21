@@ -8,7 +8,7 @@ import (
 
 func GetUsers() []model.User {
 	db = Open()
-	res, err := db.Query(`SELECT login, name FROM main.users`)
+	res, err := db.Query(`SELECT login, password, name FROM main.users`)
 	Close()
 
 	if err != nil {
@@ -19,7 +19,7 @@ func GetUsers() []model.User {
 
 	for res.Next() {
 		user := model.User{}
-		err := res.Scan(&user.Login, &user.Name)
+		err := res.Scan(&user.Login, &user.Password, &user.Name)
 		if err != nil {
 			panic(err)
 		}
@@ -31,7 +31,7 @@ func GetUsers() []model.User {
 
 func GetUserByLogin(login string) model.User {
 	db = Open()
-	stmt, err := db.Prepare(`SELECT login, name FROM main.users WHERE login=?`)
+	stmt, err := db.Prepare(`SELECT login, password, name FROM main.users WHERE login=?`)
 
 	if err != nil {
 		panic(err)
@@ -39,7 +39,7 @@ func GetUserByLogin(login string) model.User {
 	res := stmt.QueryRow(login)
 	Close()
 	user := model.User{}
-	err = res.Scan(&user.Login, &user.Name)
+	err = res.Scan(&user.Login, &user.Password, &user.Name)
 	if err != nil {
 		panic(err)
 	}
