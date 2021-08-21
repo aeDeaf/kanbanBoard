@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/kanban-board-frontend/kanban-board-frontend.iml" filepath="$PROJECT_DIR$/kanban-board-frontend/kanban-board-frontend.iml" />
-      <module fileurl="file://$PROJECT_DIR$/kanbanBoardServer/kanbanBoardServer.iml" filepath="$PROJECT_DIR$/kanbanBoardServer/kanbanBoardServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kanban-board-server/kanban-board-server.iml" filepath="$PROJECT_DIR$/kanban-board-server/kanban-board-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/kanboard.iml" filepath="$PROJECT_DIR$/.idea/kanboard.iml" />
     </modules>
   </component>
