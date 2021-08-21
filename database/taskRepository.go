@@ -145,7 +145,7 @@ func CreateTask(task model.Task) {
 	}
 
 	res, err := stmt.Exec(task.Name, task.Description, task.CreatorUser, task.PerformerUser, task.ProjectName)
-
+	Close()
 	if err != nil {
 		panic(err)
 	}
@@ -199,6 +199,7 @@ func UpdateTask(task model.Task) {
 	affected, err := res.RowsAffected()
 
 	fmt.Println("Affected: " + strconv.FormatInt(affected, 10) + " rows")
+	Close()
 }
 
 func DeleteTask(name string) {
@@ -209,6 +210,7 @@ func DeleteTask(name string) {
 	}
 
 	res, err := stmt.Exec(name)
+	Close()
 
 	if err != nil {
 		panic(err)

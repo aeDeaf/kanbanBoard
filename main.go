@@ -25,6 +25,11 @@ func main() {
 	router.HandleFunc("/project", controller.CreateProject).Methods("POST")
 	router.HandleFunc("/project/{id}/task", controller.GetTasksByProjectId).Methods("GET")
 
+	router.HandleFunc("/user", controller.GetUsers).Methods("GET")
+	router.HandleFunc("/user/{login}", controller.GetUser).Methods("GET")
+	router.HandleFunc("/user/{login}/performer", controller.GetTasksByPerformerUser).Methods("GET")
+	router.HandleFunc("/user", controller.CreateUser).Methods("POST")
+
 	err := http.ListenAndServe(":8080", router)
 
 	if err != nil {

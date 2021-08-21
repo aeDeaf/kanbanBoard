@@ -20,17 +20,6 @@ var GetTaskByName = func(w http.ResponseWriter, r *http.Request) {
 	utils.Respond(w, resp)
 }
 
-var GetTasksByPerformerUser = func(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	login := params["login"]
-
-	task := database.GetTasksByPerformerUser(login)
-	resp := utils.Message(true, "Get tasks for performer user "+login)
-	resp["task"] = task
-
-	utils.Respond(w, resp)
-}
-
 var GetTasks = func(w http.ResponseWriter, r *http.Request) {
 	tasks := database.GetTasks()
 

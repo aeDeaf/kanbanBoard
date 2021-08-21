@@ -36,12 +36,12 @@ func GetProjectById(id int) model.Project {
     	JOIN users u on p.manager_id = u.id
     WHERE p.id=?
     `)
-	Close()
+
 	if err != nil {
 		panic(err)
 	}
 	res := stmt.QueryRow(id)
-
+	Close()
 	project := model.Project{}
 	err = res.Scan(&project.Id, &project.Name, &project.Description, &project.Manager)
 	if err != nil {
@@ -63,7 +63,7 @@ func CreateProject(project model.Project) {
 	}
 
 	res, err := stmt.Exec(project.Name, project.Description, project.Manager)
-
+	Close()
 	if err != nil {
 		panic(err)
 	}
