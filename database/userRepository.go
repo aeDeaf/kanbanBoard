@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"golang.org/x/crypto/bcrypt"
 	"kanboard/model"
 	"strconv"
 )
@@ -56,8 +57,11 @@ func CreateUser(user model.User) {
 	if err != nil {
 		panic(err)
 	}
-
-	res, err := stmt.Exec(user.Login, user.Password, user.Name)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		panic(err)
+	}
+	res, err := stmt.Exec(user.Login, string(hashedPassword), user.Name)
 	Close()
 	if err != nil {
 		panic(err)
