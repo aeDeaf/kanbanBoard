@@ -1,0 +1,20 @@
+.desk {
+    min-height: calc(100vh - 60px);
+    width: 100vw;
+}
+
+.grid {
+    padding-top: 60px;
+    padding-left: 20px;
+    padding-right: 20px;
+    flex-grow: 1;
+}
+
+.column {
+    min-height: calc(100vh - 80px);
+    min-width: 200px;
+}
+
+.card {
+    margin-bottom: 10px;
+}

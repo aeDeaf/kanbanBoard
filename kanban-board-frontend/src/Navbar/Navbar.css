@@ -1,0 +1,25 @@
+.drawer {
+    width: 250px;
+}
+
+.nav {
+}
+
+.user {
+    position: absolute;
+    right: 45px;
+}
+
+.userName {
+    margin-left: 10px;
+}
+
+.title {
+    flex-grow: 1;
+}
+
+.logout {
+    position: absolute;
+    right: 20px;
+    width: 20px;
+}
