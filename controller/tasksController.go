@@ -7,7 +7,6 @@ import (
 	"kanboard/model"
 	"kanboard/utils"
 	"net/http"
-	"strconv"
 )
 
 var GetTaskByName = func(w http.ResponseWriter, r *http.Request) {
@@ -27,21 +26,6 @@ var GetTasksByPerformerUser = func(w http.ResponseWriter, r *http.Request) {
 
 	task := database.GetTasksByPerformerUser(login)
 	resp := utils.Message(true, "Get tasks for performer user "+login)
-	resp["task"] = task
-
-	utils.Respond(w, resp)
-}
-
-var GetTasksByProjectId = func(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	id, err := strconv.Atoi(params["id"])
-
-	if err != nil {
-		panic(err)
-	}
-
-	task := database.GetTasksByProjectId(id)
-	resp := utils.Message(true, "Get tasks for project "+strconv.Itoa(id))
 	resp["task"] = task
 
 	utils.Respond(w, resp)

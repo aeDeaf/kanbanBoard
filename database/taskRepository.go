@@ -8,7 +8,12 @@ import (
 
 func GetTaskByName(name string) model.Task {
 	db = Open()
-	stmt, err := db.Prepare("SELECT t.name, t.description, u.name, u2.name, p.name, c.name FROM tasks AS t JOIN users u on t.creator_user_id = u.id JOIN users u2 on t.performer_user_id = u2.id JOIN projects p on p.id = t.project_id JOIN columns c on c.id = t.column_id WHERE t.name=?;")
+	stmt, err := db.Prepare(`
+	SELECT t.name, t.description, u.name, u2.name, p.name, c.name FROM tasks AS t 
+    	JOIN users u on t.creator_user_id = u.id JOIN users u2 on t.performer_user_id = u2.id 
+    	JOIN projects p on p.id = t.project_id JOIN columns c on c.id = t.column_id 
+	WHERE t.name=?;
+	`)
 
 	if err != nil {
 		panic(err)
@@ -29,7 +34,12 @@ func GetTaskByName(name string) model.Task {
 
 func GetTasksByPerformerUser(login string) []model.Task {
 	db = Open()
-	stmt, err := db.Prepare("SELECT t.name, t.description, u.name, u2.name, p.name, c.name FROM tasks AS t JOIN users u on t.creator_user_id = u.id JOIN users u2 on t.performer_user_id = u2.id JOIN projects p on p.id = t.project_id JOIN columns c on c.id = t.column_id WHERE u2.login=?;")
+	stmt, err := db.Prepare(`
+	SELECT t.name, t.description, u.name, u2.name, p.name, c.name FROM tasks AS t 
+    	JOIN users u on t.creator_user_id = u.id JOIN users u2 on t.performer_user_id = u2.id 
+    	JOIN projects p on p.id = t.project_id 
+    	JOIN columns c on c.id = t.column_id WHERE u2.login=?;
+	`)
 
 	if err != nil {
 		panic(err)
@@ -58,7 +68,14 @@ func GetTasksByPerformerUser(login string) []model.Task {
 
 func GetTasksByProjectId(id int) []model.Task {
 	db = Open()
-	stmt, err := db.Prepare("SELECT t.name, t.description, u.name, u2.name, p.name, c.name FROM tasks AS t JOIN users u on t.creator_user_id = u.id JOIN users u2 on t.performer_user_id = u2.id JOIN projects p on p.id = t.project_id JOIN columns c on c.id = t.column_id WHERE p.id=?;")
+	stmt, err := db.Prepare(`
+	SELECT t.name, t.description, u.name, u2.name, p.name, c.name FROM tasks AS t 
+    	JOIN users u on t.creator_user_id = u.id 
+    	JOIN users u2 on t.performer_user_id = u2.id 
+    	JOIN projects p on p.id = t.project_id 
+    	JOIN columns c on c.id = t.column_id 
+	WHERE p.id=?;
+	`)
 
 	if err != nil {
 		panic(err)
@@ -87,7 +104,13 @@ func GetTasksByProjectId(id int) []model.Task {
 
 func GetTasks() []model.Task {
 	db := Open()
-	res, err := db.Query("SELECT t.name, t.description, u.name, u2.name, p.name, c.name FROM tasks AS t JOIN users u on t.creator_user_id = u.id JOIN users u2 on t.performer_user_id = u2.id JOIN projects p on p.id = t.project_id JOIN columns c on c.id = t.column_id;")
+	res, err := db.Query(`
+	SELECT t.name, t.description, u.name, u2.name, p.name, c.name FROM tasks AS t
+	    JOIN users u on t.creator_user_id = u.id
+	    JOIN users u2 on t.performer_user_id = u2.id
+	    JOIN projects p on p.id = t.project_id
+	    JOIN columns c on c.id = t.column_id;
+	    `)
 	Close()
 
 	if err != nil {
@@ -111,7 +134,11 @@ func GetTasks() []model.Task {
 
 func CreateTask(task model.Task) {
 	db := Open()
-	stmt, err := db.Prepare("INSERT INTO main.tasks (name, description, creator_user_id, performer_user_id, project_id, column_id) VALUES (?, ?, (SELECT id FROM main.users WHERE login=?), (SELECT id FROM main.users WHERE login=?), (SELECT id FROM main.projects WHERE name=?), 1)")
+	stmt, err := db.Prepare(`
+	INSERT INTO main.tasks (name, description, creator_user_id, performer_user_id, project_id, column_id)
+	VALUES (?, ?, (SELECT id FROM main.users WHERE login=?), (SELECT id FROM main.users WHERE login=?),
+	         (SELECT id FROM main.projects WHERE name=?), 1)
+	`)
 
 	if err != nil {
 		panic(err)
@@ -150,7 +177,15 @@ func UpdateTask(task model.Task) {
 		return
 	}
 
-	stmt, err = db.Prepare("UPDATE main.tasks SET description=?, creator_user_id=(SELECT id FROM main.users WHERE login=?), performer_user_id=(SELECT id FROM main.users WHERE login=?), project_id=(SELECT id FROM main.projects WHERE name=?), column_id=(SELECT id FROM main.columns WHERE name=?) WHERE id=?")
+	stmt, err = db.Prepare(`
+	UPDATE main.tasks SET 
+	                      description=?, 
+	                      creator_user_id=(SELECT id FROM main.users WHERE login=?), 
+	                      performer_user_id=(SELECT id FROM main.users WHERE login=?), 
+	                      project_id=(SELECT id FROM main.projects WHERE name=?), 
+	                      column_id=(SELECT id FROM main.columns WHERE name=?) 
+	WHERE id=?
+	`)
 	if err != nil {
 		panic(err)
 	}
