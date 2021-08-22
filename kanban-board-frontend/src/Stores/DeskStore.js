@@ -32,26 +32,38 @@ class DeskStore {
         this.tasks['Backlog'] = [{
             name: 'Task 1',
             description: 'Task 1 description',
-            creationUser: 'Admin',
-            performerUser: 'User 1'
+            creatorUserName: 'Admin',
+            creatorUserLogin: 'admin',
+            performerUserName: 'User 1',
+            performerUserLogin: 'user1',
+            due: '01.01.21'
         }]
         this.tasks['WIP'] = [{
             name: 'Task 2',
             description: 'Task 2 description',
-            creationUser: 'Admin',
-            performerUser: 'User 1'
+            creatorUserName: 'Admin',
+            creatorUserLogin: 'admin',
+            performerUserName: 'User 1',
+            performerUserLogin: 'user1',
+            due: '01.01.21'
         }]
         this.tasks['In testing'] = [{
             name: 'Task 3',
             description: 'Task 3 description',
-            creationUser: 'Admin',
-            performerUser: 'User 2'
+            creatorUserName: 'Admin',
+            creatorUserLogin: 'admin',
+            performerUserName: 'User 2',
+            performerUserLogin: 'user2',
+            due: '01.01.21'
         }]
         this.tasks['Done'] = [{
             name: 'Task 4',
             description: 'Task 4 description',
-            creationUser: 'Admin',
-            performerUser: 'User 1'
+            creatorUserName: 'Admin',
+            creatorUserLogin: 'admin',
+            performerUserName: 'User 1',
+            performerUserLogin: 'user1',
+            due: '01.01.21'
         }]
     }
 

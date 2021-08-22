@@ -1,7 +1,19 @@
 import {DragSource} from "react-dnd";
-import {Card, CardContent, CardHeader, Divider} from "@material-ui/core";
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    Divider,
+    Avatar,
+    CardActions,
+    IconButton,
+    Collapse,
+    Typography, Box
+} from "@material-ui/core";
 import React, {Component} from "react";
 import './Desk.css'
+import {takeInitials, isEmpty} from "../Utils/utils";
+import {ExpandMore} from "@material-ui/icons";
 
 const Types = {
     CARD: 'card'
@@ -40,25 +52,70 @@ function collect(connect, monitor) {
 class TaskCard extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            expanded: false,
+            expandBtnStyle: {
+                transform: 'rotate(0deg)'
+            }
+        }
+    }
+
+    onExpandBtnClicked = () => {
+        const newState = {...this.state}
+        newState.expanded = !newState.expanded
+        if (newState.expanded) {
+            newState.expandBtnStyle = {
+                transform: 'rotate(180deg)'
+            }
+        } else {
+            newState.expandBtnStyle = {
+                transform: 'rotate(0deg)'
+            }
+        }
+        this.setState(newState)
     }
 
     render() {
-        const { isDragging, connectDragSource } = this.props
+        const {isDragging, connectDragSource} = this.props
         return connectDragSource(
             <div className="card">
-                {isDragging ? null : <Card>
-                    <CardHeader
-                        title={this.props.name}
-                    />
-                    <Divider/>
-                    <CardContent>
-                        {this.props.description}
-                    </CardContent>
-                </Card>
+                {isDragging ? null :
+                    <Box border={1} borderRadius={5}>
+                        <Card>
+                            <CardHeader
+                                avatar={<Avatar>{
+                                    isEmpty(this.props.performerUserName) ?
+                                        takeInitials(this.props.creatorUserName) :
+                                        takeInitials(this.props.performerUserName)
+                                }</Avatar>}
+                                title={this.props.name}
+                                subheader={'Task creator: ' + this.props.creatorUserName}
+                                subheaderTypographyProps={{align: 'left'}}
+                                titleTypographyProps={{align: "left", variant: "h5"}}
+                            />
+                            <Divider/>
+                            <CardContent>
+                                <Typography variant='h4' align='left'>
+                                    Due {this.props.due}
+                                </Typography>
+                            </CardContent>
+                            <CardActions disableSpacing>
+                                <div className="expandBtn">
+                                    <IconButton style={this.state.expandBtnStyle} onClick={this.onExpandBtnClicked}>
+                                        <ExpandMore/>
+                                    </IconButton>
+                                </div>
+                            </CardActions>
+                            <Collapse in={this.state.expanded}>
+                                <CardContent>
+                                    {this.props.description}
+                                </CardContent>
+                            </Collapse>
+                        </Card>
+                    </Box>
                 }
 
             </div>
-
         );
     }
 }

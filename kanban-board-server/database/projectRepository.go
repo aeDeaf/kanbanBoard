@@ -10,7 +10,8 @@ func GetProjects() []model.Project {
 	db = Open()
 	res, err := db.Query(`
 	SELECT p.id, p.name, description, u.name FROM main.projects AS p
-    	JOIN users u on p.manager_id = u.id`)
+    	JOIN users u on p.manager_id = u.id
+	`)
 	Close()
 	if err != nil {
 		panic(err)
