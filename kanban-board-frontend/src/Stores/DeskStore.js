@@ -1,4 +1,7 @@
 import {action, computed, makeObservable, observable} from "mobx";
+import axios from "axios";
+
+axios.defaults.baseURL = 'http://localhost:8080'
 
 class DeskStore {
     @observable tasks = {}
@@ -11,7 +14,57 @@ class DeskStore {
         const {key, index} = this.getTask(taskName)
         const task = {...this.tasks[key][index]}
         this.tasks[key].splice(index, 1)
-        this.tasks[newColumn].push(task)
+        this.saveTask(task, newColumn)
+            .then(() => {
+                this.tasks[newColumn].push(task)
+            })
+            .catch(() => {
+                this.tasks[key].push(task)
+                alert("Can not update task")
+            })
+    }
+
+    @action getTasksByProjectId(projectId) {
+        axios
+            .get('/project/' + projectId + '/task', {
+                auth: {
+                    username: 'admin',
+                    password: 'password'
+                }
+            })
+            .then(response => {
+                const tasksDTO = response.data['task']
+                const tasks = {}
+                axios
+                    .get('/columns', {
+                        auth: {
+                            username: 'admin',
+                            password: 'password'
+                        }
+                    })
+                    .then(res => {
+                        const columns = res.data.columns
+                        columns.forEach(column => {
+                            tasks[column] = []
+                        })
+                        tasksDTO.forEach(taskDTO => {
+                            const task = {}
+                            const columnName = taskDTO['ColumnName']
+                            console.log(columnName)
+                            const keys = Object.keys(taskDTO)
+                            console.log(keys)
+                            keys.forEach(key => {
+                                if (key !== 'ColumnName') {
+                                    const newKey = key[0].toLowerCase() + key.substring(1)
+                                    task[newKey] = taskDTO[key]
+                                }
+                            })
+                            tasks[columnName].push(task)
+                        })
+                        console.log(tasks)
+                        this.tasks = tasks
+                    })
+            })
     }
 
     getTask(taskName) {
@@ -26,6 +79,22 @@ class DeskStore {
                 }
             }
         }
+    }
+
+    saveTask(task, columnName) {
+        const taskDTO = {}
+        Object.keys(task).forEach(key => {
+            const newKey = key[0].toUpperCase() + key.substring(1)
+            taskDTO[newKey] = task[key]
+        })
+        taskDTO['ColumnName'] = columnName
+        return axios
+            .put('/task', taskDTO, {
+                auth: {
+                    username: 'admin',
+                    password: 'password'
+                }
+            })
     }
 
     setUpTestData() {
@@ -69,7 +138,6 @@ class DeskStore {
 
     constructor() {
         makeObservable(this)
-        this.setUpTestData()
     }
 }
 

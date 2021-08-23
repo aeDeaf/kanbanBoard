@@ -12,6 +12,10 @@ import (
 )
 
 var GetProjects = func(w http.ResponseWriter, r *http.Request) {
+	utils.Cors(w, r)
+	if r.Method == http.MethodOptions {
+		return
+	}
 	err := auth.VerifyRequest(w, r)
 	if err == nil {
 		projects := database.GetProjects()
@@ -22,6 +26,10 @@ var GetProjects = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var GetProjectById = func(w http.ResponseWriter, r *http.Request) {
+	utils.Cors(w, r)
+	if r.Method == http.MethodOptions {
+		return
+	}
 	err := auth.VerifyRequest(w, r)
 	if err == nil {
 		params := mux.Vars(r)
@@ -40,6 +48,10 @@ var GetProjectById = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var CreateProject = func(w http.ResponseWriter, r *http.Request) {
+	utils.Cors(w, r)
+	if r.Method == http.MethodOptions {
+		return
+	}
 	err := auth.VerifyRequest(w, r)
 	if err == nil {
 		project := model.Project{}
@@ -57,6 +69,10 @@ var CreateProject = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var GetTasksByProjectId = func(w http.ResponseWriter, r *http.Request) {
+	utils.Cors(w, r)
+	if r.Method == http.MethodOptions {
+		return
+	}
 	err := auth.VerifyRequest(w, r)
 	if err == nil {
 		params := mux.Vars(r)

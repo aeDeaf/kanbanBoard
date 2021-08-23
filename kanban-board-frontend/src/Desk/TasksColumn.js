@@ -8,7 +8,7 @@ import {observer} from "mobx-react";
 class TasksColumn extends Component {
     render() {
         return (
-            <div>
+            <div className="column">
                 <Card className="column">
                     <CardHeader
                         title={this.props.name}

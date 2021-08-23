@@ -7,6 +7,11 @@ import Column from "./Column";
 
 @observer
 class Desk extends Component {
+    componentDidMount() {
+        console.log(this.props)
+        DeskStore.getTasksByProjectId(this.props.match.params.id)
+    }
+
     render() {
         return (
             <div className="desk">

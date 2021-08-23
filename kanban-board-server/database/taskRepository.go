@@ -9,7 +9,7 @@ import (
 func GetTaskByName(name string) model.Task {
 	db = Open()
 	stmt, err := db.Prepare(`
-	SELECT t.name, t.description, u.name, u2.name, p.name, c.name FROM tasks AS t 
+	SELECT t.name, t.description, u.name, u.login, u2.name, u2.login, p.name, c.name, t.due FROM tasks AS t 
     	JOIN users u on t.creator_user_id = u.id JOIN users u2 on t.performer_user_id = u2.id 
     	JOIN projects p on p.id = t.project_id JOIN columns c on c.id = t.column_id 
 	WHERE t.name=?;
@@ -23,8 +23,9 @@ func GetTaskByName(name string) model.Task {
 	Close()
 
 	task := model.Task{}
-	err = res.Scan(&task.Name, &task.Description, &task.CreatorUser, &task.PerformerUser, &task.ProjectName,
-		&task.ColumnName)
+	err = res.Scan(&task.Name, &task.Description, &task.CreatorUserName, &task.CreatorUserLogin,
+		&task.PerformerUserName, &task.PerformerUserLogin, &task.ProjectName, &task.ColumnName,
+		&task.Due)
 	if err != nil {
 		panic(err)
 	}
@@ -35,7 +36,7 @@ func GetTaskByName(name string) model.Task {
 func GetTasksByPerformerUser(login string) []model.Task {
 	db = Open()
 	stmt, err := db.Prepare(`
-	SELECT t.name, t.description, u.name, u2.name, p.name, c.name FROM tasks AS t 
+	SELECT t.name, t.description, u.name, u.login, u2.name, u2.login, p.name, c.name, t.due FROM tasks AS t 
     	JOIN users u on t.creator_user_id = u.id JOIN users u2 on t.performer_user_id = u2.id 
     	JOIN projects p on p.id = t.project_id 
     	JOIN columns c on c.id = t.column_id WHERE u2.login=?;
@@ -55,8 +56,9 @@ func GetTasksByPerformerUser(login string) []model.Task {
 
 	for res.Next() {
 		task := model.Task{}
-		err = res.Scan(&task.Name, &task.Description, &task.CreatorUser, &task.PerformerUser, &task.ProjectName,
-			&task.ColumnName)
+		err = res.Scan(&task.Name, &task.Description, &task.CreatorUserName, &task.CreatorUserLogin,
+			&task.PerformerUserName, &task.PerformerUserLogin, &task.ProjectName, &task.ColumnName,
+			&task.Due)
 		if err != nil {
 			panic(err)
 		}
@@ -69,7 +71,7 @@ func GetTasksByPerformerUser(login string) []model.Task {
 func GetTasksByProjectId(id int) []model.Task {
 	db = Open()
 	stmt, err := db.Prepare(`
-	SELECT t.name, t.description, u.name, u2.name, p.name, c.name FROM tasks AS t 
+	SELECT t.name, t.description, u.name, u.login, u2.name, u2.login, p.name, c.name, t.due FROM tasks AS t 
     	JOIN users u on t.creator_user_id = u.id 
     	JOIN users u2 on t.performer_user_id = u2.id 
     	JOIN projects p on p.id = t.project_id 
@@ -91,8 +93,9 @@ func GetTasksByProjectId(id int) []model.Task {
 
 	for res.Next() {
 		task := model.Task{}
-		err = res.Scan(&task.Name, &task.Description, &task.CreatorUser, &task.PerformerUser, &task.ProjectName,
-			&task.ColumnName)
+		err = res.Scan(&task.Name, &task.Description, &task.CreatorUserName, &task.CreatorUserLogin,
+			&task.PerformerUserName, &task.PerformerUserLogin, &task.ProjectName, &task.ColumnName,
+			&task.Due)
 		if err != nil {
 			panic(err)
 		}
@@ -105,7 +108,7 @@ func GetTasksByProjectId(id int) []model.Task {
 func GetTasks() []model.Task {
 	db := Open()
 	res, err := db.Query(`
-	SELECT t.name, t.description, u.name, u2.name, p.name, c.name FROM tasks AS t
+	SELECT t.name, t.description, u.name, u.login, u2.name, u2.login, p.name, c.name, t.due FROM tasks AS t 
 	    JOIN users u on t.creator_user_id = u.id
 	    JOIN users u2 on t.performer_user_id = u2.id
 	    JOIN projects p on p.id = t.project_id
@@ -121,8 +124,9 @@ func GetTasks() []model.Task {
 
 	for res.Next() {
 		task := model.Task{}
-		err = res.Scan(&task.Name, &task.Description, &task.CreatorUser, &task.PerformerUser, &task.ProjectName,
-			&task.ColumnName)
+		err = res.Scan(&task.Name, &task.Description, &task.CreatorUserName, &task.CreatorUserLogin,
+			&task.PerformerUserName, &task.PerformerUserLogin, &task.ProjectName, &task.ColumnName,
+			&task.Due)
 		if err != nil {
 			panic(err)
 		}
@@ -144,7 +148,7 @@ func CreateTask(task model.Task) {
 		panic(err)
 	}
 
-	res, err := stmt.Exec(task.Name, task.Description, task.CreatorUser, task.PerformerUser, task.ProjectName)
+	res, err := stmt.Exec(task.Name, task.Description, task.CreatorUserLogin, task.PerformerUserLogin, task.ProjectName)
 	Close()
 	if err != nil {
 		panic(err)
@@ -190,7 +194,7 @@ func UpdateTask(task model.Task) {
 		panic(err)
 	}
 
-	res, err := stmt.Exec(task.Description, task.CreatorUser, task.PerformerUser, task.ProjectName,
+	res, err := stmt.Exec(task.Description, task.CreatorUserLogin, task.PerformerUserLogin, task.ProjectName,
 		task.ColumnName, id)
 
 	if err != nil {

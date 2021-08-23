@@ -12,24 +12,30 @@ func main() {
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/test", controller.Test).Methods("GET")
-	router.HandleFunc("/task/{name}", controller.GetTaskByName).Methods("GET")
-	router.HandleFunc("/task/{name}", controller.DeleteTask).Methods("DELETE")
-	router.HandleFunc("/user/{login}/performer", controller.GetTasksByPerformerUser).Methods("GET")
-	router.HandleFunc("/task", controller.GetTasks).Methods("GET")
-	router.HandleFunc("/task", controller.CreateTask).Methods("POST")
-	router.HandleFunc("/task", controller.UpdateTask).Methods("PUT")
+	router.HandleFunc("/test", controller.Test).Methods("GET", http.MethodOptions)
+	router.HandleFunc("/task/{name}", controller.GetTaskByName).Methods("GET", http.MethodOptions)
+	router.HandleFunc("/task/{name}", controller.DeleteTask).Methods("DELETE", http.MethodOptions)
+	router.HandleFunc("/user/{login}/performer", controller.GetTasksByPerformerUser).Methods("GET",
+		http.MethodOptions)
+	router.HandleFunc("/task", controller.GetTasks).Methods("GET", http.MethodOptions)
+	router.HandleFunc("/task", controller.CreateTask).Methods("POST", http.MethodOptions)
+	router.HandleFunc("/task", controller.UpdateTask).Methods("PUT", http.MethodOptions)
 
-	router.HandleFunc("/project", controller.GetProjects).Methods("GET")
-	router.HandleFunc("/project/{id}", controller.GetProjectById).Methods("GET")
-	router.HandleFunc("/project", controller.CreateProject).Methods("POST")
-	router.HandleFunc("/project/{id}/task", controller.GetTasksByProjectId).Methods("GET")
+	router.HandleFunc("/project", controller.GetProjects).Methods("GET", http.MethodOptions)
+	router.HandleFunc("/project/{id}", controller.GetProjectById).Methods("GET", http.MethodOptions)
+	router.HandleFunc("/project", controller.CreateProject).Methods("POST", http.MethodOptions)
+	router.HandleFunc("/project/{id}/task", controller.GetTasksByProjectId).Methods("GET",
+		http.MethodOptions)
 
-	router.HandleFunc("/user", controller.GetUsers).Methods("GET")
-	router.HandleFunc("/user/{login}", controller.GetUser).Methods("GET")
-	router.HandleFunc("/user/{login}/performer", controller.GetTasksByPerformerUser).Methods("GET")
-	router.HandleFunc("/user", controller.CreateUser).Methods("POST")
+	router.HandleFunc("/user", controller.GetUsers).Methods("GET", http.MethodOptions)
+	router.HandleFunc("/user/{login}", controller.GetUser).Methods("GET", http.MethodOptions)
+	router.HandleFunc("/user/{login}/performer", controller.GetTasksByPerformerUser).Methods("GET",
+		http.MethodOptions)
+	router.HandleFunc("/user", controller.CreateUser).Methods("POST", http.MethodOptions)
 
+	router.HandleFunc("/columns", controller.GetColumns).Methods(http.MethodGet, http.MethodOptions)
+
+	router.Use(mux.CORSMethodMiddleware(router))
 	err := http.ListenAndServe(":8080", router)
 
 	if err != nil {

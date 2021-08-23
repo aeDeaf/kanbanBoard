@@ -11,6 +11,10 @@ import (
 )
 
 var GetTaskByName = func(w http.ResponseWriter, r *http.Request) {
+	utils.Cors(w, r)
+	if r.Method == http.MethodOptions {
+		return
+	}
 	err := auth.VerifyRequest(w, r)
 	if err == nil {
 		params := mux.Vars(r)
@@ -25,6 +29,10 @@ var GetTaskByName = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var GetTasks = func(w http.ResponseWriter, r *http.Request) {
+	utils.Cors(w, r)
+	if r.Method == http.MethodOptions {
+		return
+	}
 	err := auth.VerifyRequest(w, r)
 	if err == nil {
 		tasks := database.GetTasks()
@@ -37,6 +45,10 @@ var GetTasks = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var CreateTask = func(w http.ResponseWriter, r *http.Request) {
+	utils.Cors(w, r)
+	if r.Method == http.MethodOptions {
+		return
+	}
 	err := auth.VerifyRequest(w, r)
 	if err == nil {
 		task := &model.Task{}
@@ -52,6 +64,10 @@ var CreateTask = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var UpdateTask = func(w http.ResponseWriter, r *http.Request) {
+	utils.Cors(w, r)
+	if r.Method == http.MethodOptions {
+		return
+	}
 	err := auth.VerifyRequest(w, r)
 	if err == nil {
 		task := &model.Task{}
@@ -67,6 +83,10 @@ var UpdateTask = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var DeleteTask = func(w http.ResponseWriter, r *http.Request) {
+	utils.Cors(w, r)
+	if r.Method == http.MethodOptions {
+		return
+	}
 	err := auth.VerifyRequest(w, r)
 	if err == nil {
 		params := mux.Vars(r)

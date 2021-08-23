@@ -11,6 +11,10 @@ import (
 )
 
 var GetUsers = func(w http.ResponseWriter, r *http.Request) {
+	utils.Cors(w, r)
+	if r.Method == http.MethodOptions {
+		return
+	}
 	err := auth.VerifyRequest(w, r)
 	if err == nil {
 		users := database.GetUsers()
@@ -25,6 +29,10 @@ var GetUsers = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var GetUser = func(w http.ResponseWriter, r *http.Request) {
+	utils.Cors(w, r)
+	if r.Method == http.MethodOptions {
+		return
+	}
 	err := auth.VerifyRequest(w, r)
 	if err == nil {
 		params := mux.Vars(r)
@@ -40,6 +48,10 @@ var GetUser = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var GetTasksByPerformerUser = func(w http.ResponseWriter, r *http.Request) {
+	utils.Cors(w, r)
+	if r.Method == http.MethodOptions {
+		return
+	}
 	err := auth.VerifyRequest(w, r)
 	if err == nil {
 		params := mux.Vars(r)
@@ -54,6 +66,10 @@ var GetTasksByPerformerUser = func(w http.ResponseWriter, r *http.Request) {
 }
 
 var CreateUser = func(w http.ResponseWriter, r *http.Request) {
+	utils.Cors(w, r)
+	if r.Method == http.MethodOptions {
+		return
+	}
 	err := auth.VerifyRequest(w, r)
 	if err == nil {
 		user := model.User{}

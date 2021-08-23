@@ -11,7 +11,7 @@
 }
 
 .column {
-    min-height: calc(100vh - 80px);
+    height: max(100%, 100vh);
     min-width: 200px;
 }
 
@@ -21,4 +21,13 @@
 
 .expandBtn {
     margin-left: auto;
+}
+
+@keyframes expandBtnSpin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(180deg);
+    }
 }

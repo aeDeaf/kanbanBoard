@@ -16,3 +16,10 @@ func Respond(w http.ResponseWriter, data map[string]interface{}) {
 		return
 	}
 }
+
+func Cors(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,PATCH,OPTIONS")
+	//w.Header().Set("Access-Control-Allow-Headers", "Authorization")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+}

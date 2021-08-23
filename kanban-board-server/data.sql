@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS tasks
     performer_user_id INTEGER,
     project_id        INTEGER,
     column_id         INTEGER,
+    due               TEXT,
     FOREIGN KEY (creator_user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (performer_user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE,
@@ -55,10 +56,15 @@ VALUES (1, 'Backlog'),
        (3, 'In testing'),
        (4, 'Done');
 
-INSERT OR IGNORE INTO main.tasks (id, name, description, creator_user_id, performer_user_id, project_id, column_id)
-VALUES (1, 'Task 1', 'Task1 description', 1, 2, 1, 1),
-       (2, 'Task 2', 'Task2 description', 1, 2, 2, 2),
-       (3, 'Task 3', 'Task3 description', 1, 3, 3, 3);
+INSERT OR IGNORE INTO main.tasks (id, name, description, creator_user_id, performer_user_id, project_id, column_id, due)
+VALUES (1, 'Task 1', '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut' ||
+                     ' labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation' ||
+                     ' ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in' ||
+                     ' reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.' ||
+                     ' Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt' ||
+                     ' mollit anim id est laborum."', 1, 2, 1, 1, '01.09.21'),
+       (2, 'Task 2', 'Task2 description', 1, 2, 2, 2, '01.09.21'),
+       (3, 'Task 3', 'Task3 description', 1, 3, 3, 3, '01.09.21');
 
 
 

@@ -33,7 +33,7 @@ class Column extends Component {
     render() {
         const connectDropTarget = this.props['connectDropTarget']
         return connectDropTarget(
-            <div>
+            <div className="column">
                 <TasksColumn {...this.props}/>
             </div>
         )
