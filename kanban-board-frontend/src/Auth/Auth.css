@@ -1,0 +1,31 @@
+.loginCard {
+    width: 350px;
+    height: 244px;
+    position: fixed;
+    top: calc(50% - 122px);
+    left: calc(50% - 175px);
+}
+
+.signUpLink {
+    display: inline;
+    position: relative;
+    left: 170px;
+    margin-left: auto;
+    font-size: 0.8em;
+}
+
+.singUpCard {
+    width: 350px;
+    height: 293px;
+    position: fixed;
+    top: calc(50% - 146px);
+    left: calc(50% - 175px);
+}
+
+.loginButton {
+    margin-left: 5px;
+}
+
+.signUpButton {
+    margin-left: 5px;
+}

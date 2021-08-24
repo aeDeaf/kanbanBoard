@@ -1,10 +1,22 @@
 import {action, computed, makeObservable, observable} from "mobx";
 import axios from "axios";
+import {sleep} from "../Utils/utils";
+import AppStore from "./AppStore";
 
 axios.defaults.baseURL = 'http://localhost:8080'
 
 class DeskStore {
     @observable tasks = {}
+
+    @observable backdropOpen = false
+
+    @computed get style() {
+        if (this.backdropOpen) {
+            return {backgroundColor: null}
+        } else {
+            return {backgroundColor: '#282c34'}
+        }
+    }
 
     @computed get columnsNames() {
         return Object.keys(this.tasks)
@@ -24,24 +36,23 @@ class DeskStore {
             })
     }
 
+    @action clearTasks() {
+        const keys = Object.keys(this.tasks)
+        keys.forEach(key => {
+            this.tasks[key] = []
+        })
+    }
+
     @action getTasksByProjectId(projectId) {
+        this.clearTasks()
+        this.backdropOpen = true
         axios
-            .get('/project/' + projectId + '/task', {
-                auth: {
-                    username: 'admin',
-                    password: 'password'
-                }
-            })
+            .get('/project/' + projectId + '/task', AppStore.axiosConfig)
             .then(response => {
                 const tasksDTO = response.data['task']
                 const tasks = {}
                 axios
-                    .get('/columns', {
-                        auth: {
-                            username: 'admin',
-                            password: 'password'
-                        }
-                    })
+                    .get('/columns', AppStore.axiosConfig)
                     .then(res => {
                         const columns = res.data.columns
                         columns.forEach(column => {
@@ -50,9 +61,7 @@ class DeskStore {
                         tasksDTO.forEach(taskDTO => {
                             const task = {}
                             const columnName = taskDTO['ColumnName']
-                            console.log(columnName)
                             const keys = Object.keys(taskDTO)
-                            console.log(keys)
                             keys.forEach(key => {
                                 if (key !== 'ColumnName') {
                                     const newKey = key[0].toLowerCase() + key.substring(1)
@@ -63,7 +72,10 @@ class DeskStore {
                         })
                         console.log(tasks)
                         this.tasks = tasks
+                        this.backdropOpen = false
+
                     })
+
             })
     }
 
@@ -89,12 +101,7 @@ class DeskStore {
         })
         taskDTO['ColumnName'] = columnName
         return axios
-            .put('/task', taskDTO, {
-                auth: {
-                    username: 'admin',
-                    password: 'password'
-                }
-            })
+            .put('/task', taskDTO, AppStore.axiosConfig)
     }
 
     setUpTestData() {

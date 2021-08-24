@@ -8,6 +8,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuIcon from '@material-ui/icons/Menu';
 import {ExitToApp, Settings} from "@material-ui/icons";
+import AppStore from "../Stores/AppStore";
 
 class TemporaryDrawer extends Component {
     constructor(props) {
@@ -27,7 +28,6 @@ class TemporaryDrawer extends Component {
         this.setState(newState)
     }
 
-
     render() {
         return (
             <div>
@@ -46,12 +46,12 @@ class TemporaryDrawer extends Component {
                     >
                         <Divider/>
                         <List>
-                            <ListItem button key='Проекты' to='/projects'>
-                                <ListItemText primary='Проекты'/>
+                            <ListItem button key='Projects' component={Link} to='/projects'>
+                                <ListItemText primary='Projects'/>
                             </ListItem>
 
-                            <ListItem button key='Пользователи' to='/users'>
-                                <ListItemText primary='Пользователи'/>
+                            <ListItem button key='Users' to='/users'>
+                                <ListItemText primary='Users'/>
                             </ListItem>
                         </List>
 
@@ -63,6 +63,10 @@ class TemporaryDrawer extends Component {
 }
 
 class Navbar extends Component {
+    logout = () => {
+        AppStore.logout()
+    }
+
 
     render() {
         return (

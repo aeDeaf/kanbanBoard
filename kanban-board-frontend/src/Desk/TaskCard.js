@@ -100,11 +100,11 @@ class TaskCard extends Component {
                                 </Typography>
                             </CardContent>
                             <CardActions disableSpacing>
-                                <div className="expandBtn">
+                                <span className="expandBtn">
                                     <IconButton style={this.state.expandBtnStyle} onClick={this.onExpandBtnClicked}>
                                         <ExpandMore/>
                                     </IconButton>
-                                </div>
+                                </span>
                             </CardActions>
                             <Collapse in={this.state.expanded}>
                                 <CardContent>

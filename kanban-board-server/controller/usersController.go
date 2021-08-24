@@ -70,17 +70,15 @@ var CreateUser = func(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodOptions {
 		return
 	}
-	err := auth.VerifyRequest(w, r)
-	if err == nil {
-		user := model.User{}
-		err := json.NewDecoder(r.Body).Decode(&user)
 
-		if err != nil {
-			panic(err)
-		}
-		database.CreateUser(user)
+	user := model.User{}
+	err := json.NewDecoder(r.Body).Decode(&user)
 
-		utils.Respond(w, utils.Message(true, "User created"))
+	if err != nil {
+		panic(err)
 	}
+	database.CreateUser(user)
+
+	utils.Respond(w, utils.Message(true, "User created"))
 
 }

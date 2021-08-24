@@ -9,7 +9,7 @@ import (
 func GetProjects() []model.Project {
 	db = Open()
 	res, err := db.Query(`
-	SELECT p.id, p.name, description, u.name FROM main.projects AS p
+	SELECT p.id, p.name, description, u.name, u.login FROM main.projects AS p
     	JOIN users u on p.manager_id = u.id
 	`)
 	Close()
@@ -21,7 +21,7 @@ func GetProjects() []model.Project {
 
 	for res.Next() {
 		project := model.Project{}
-		err := res.Scan(&project.Id, &project.Name, &project.Description, &project.Manager)
+		err := res.Scan(&project.Id, &project.Name, &project.Description, &project.ManagerName, &project.ManagerLogin)
 		if err != nil {
 			panic(err)
 		}
@@ -33,7 +33,7 @@ func GetProjects() []model.Project {
 func GetProjectById(id int) model.Project {
 	db = Open()
 	stmt, err := db.Prepare(`
-	SELECT p.id, p.name, description, u.name FROM main.projects AS p
+	SELECT p.id, p.name, description, u.name, u.login FROM main.projects AS p
     	JOIN users u on p.manager_id = u.id
     WHERE p.id=?
     `)
@@ -44,7 +44,7 @@ func GetProjectById(id int) model.Project {
 	res := stmt.QueryRow(id)
 	Close()
 	project := model.Project{}
-	err = res.Scan(&project.Id, &project.Name, &project.Description, &project.Manager)
+	err = res.Scan(&project.Id, &project.Name, &project.Description, &project.ManagerName, &project.ManagerLogin)
 	if err != nil {
 		return model.Project{}
 	}
@@ -63,7 +63,7 @@ func CreateProject(project model.Project) {
 		panic(err)
 	}
 
-	res, err := stmt.Exec(project.Name, project.Description, project.Manager)
+	res, err := stmt.Exec(project.Name, project.Description, project.ManagerLogin)
 	Close()
 	if err != nil {
 		panic(err)

@@ -1,0 +1,12 @@
+.projectCard {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    width: calc(100% - 20px)
+}
+
+.projectArea {
+    margin-top: 60px;
+    width: 100%;
+
+}

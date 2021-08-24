@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
-import {Card, CardHeader, Grid} from "@material-ui/core";
+import {Backdrop, Card, CardHeader, Grid} from "@material-ui/core";
+import CircularProgress from '@material-ui/core/CircularProgress';
 import './Desk.css'
 import {observer} from "mobx-react";
 import DeskStore from "../Stores/DeskStore";
 import Column from "./Column";
+import Navbar from "../Navbar/Navbar";
+import AppStore from "../Stores/AppStore";
+import {Redirect} from "react-router-dom";
 
 @observer
 class Desk extends Component {
@@ -13,17 +17,30 @@ class Desk extends Component {
     }
 
     render() {
-        return (
-            <div className="desk">
-                <Grid container justifyContent="center" spacing={2} className="grid">
-                    {DeskStore.columnsNames.map((value) => (
-                        <Grid key={value} item xs>
-                            <Column name={value}/>
+        if (AppStore.isLogin) {
+            return (
+                <div className="desk" style={DeskStore.style}>
+                    <Navbar/>
+                    <Backdrop className="backdrop" open={DeskStore.backdropOpen}>
+                        <CircularProgress color='secondary'/>
+                    </Backdrop>
+                    {DeskStore.backdropOpen ? null :
+                        <Grid container justifyContent="center" spacing={2} className="grid">
+                            {DeskStore.columnsNames.map((value) => (
+                                <Grid key={value} item xs>
+                                    <Column name={value}/>
+                                </Grid>
+                            ))}
+
                         </Grid>
-                    ))}
-                </Grid>
-            </div>
-        );
+                    }
+                </div>
+            );
+        } else {
+            return (
+                <Redirect to='/login'/>
+            )
+        }
     }
 }
 

@@ -11,3 +11,8 @@ export function isEmpty(str) {
     return (!str || str.length === 0 );
 }
 
+export function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+

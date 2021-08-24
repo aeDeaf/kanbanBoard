@@ -42,7 +42,7 @@ func GetUserByLogin(login string) model.User {
 	user := model.User{}
 	err = res.Scan(&user.Login, &user.Password, &user.Name)
 	if err != nil {
-		panic(err)
+		fmt.Println("Error while getting user " + login + "\n" + err.Error())
 	}
 	return user
 }
