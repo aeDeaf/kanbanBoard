@@ -58,24 +58,24 @@ class DeskStore {
                         columns.forEach(column => {
                             tasks[column] = []
                         })
-                        tasksDTO.forEach(taskDTO => {
-                            const task = {}
-                            const columnName = taskDTO['ColumnName']
-                            const keys = Object.keys(taskDTO)
-                            keys.forEach(key => {
-                                if (key !== 'ColumnName') {
-                                    const newKey = key[0].toLowerCase() + key.substring(1)
-                                    task[newKey] = taskDTO[key]
-                                }
+                        if (tasksDTO !== null) {
+                            tasksDTO.forEach(taskDTO => {
+                                const task = {}
+                                const columnName = taskDTO['ColumnName']
+                                const keys = Object.keys(taskDTO)
+                                keys.forEach(key => {
+                                    if (key !== 'ColumnName') {
+                                        const newKey = key[0].toLowerCase() + key.substring(1)
+                                        task[newKey] = taskDTO[key]
+                                    }
+                                })
+                                tasks[columnName].push(task)
                             })
-                            tasks[columnName].push(task)
-                        })
-                        console.log(tasks)
+                            console.log(tasks)
+                        }
                         this.tasks = tasks
                         this.backdropOpen = false
-
                     })
-
             })
     }
 

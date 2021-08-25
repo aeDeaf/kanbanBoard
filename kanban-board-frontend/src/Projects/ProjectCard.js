@@ -23,16 +23,21 @@ class ProjectCard extends Component {
                             {
                                 align: 'left',
                                 component: Link,
-                                to: '/user/'
+                                to: '/user/' + this.props.managerLogin
                             }
                         }
 
                     />
                     <Divider/>
                     <CardContent>
-                        <Typography align='left'>
-                            {this.props.description}
-                        </Typography>
+                        {this.props.description.split('\n').map(descriptionLine => {
+                            return (
+                                <Typography align='left'>
+                                    {descriptionLine}
+                                </Typography>
+                            )
+                        })}
+
                     </CardContent>
                 </Card>
             </div>

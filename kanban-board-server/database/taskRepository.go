@@ -85,7 +85,7 @@ func GetTasksByProjectId(id int) []model.Task {
 	fmt.Println(id)
 	res, err := stmt.Query(id)
 	if err != nil {
-		panic(err)
+		fmt.Println("Error while getting tasks. \n" + err.Error())
 	}
 	Close()
 
