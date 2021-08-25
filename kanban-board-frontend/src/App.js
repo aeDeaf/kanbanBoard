@@ -15,6 +15,7 @@ import {observer} from "mobx-react";
 import DeskStore from "./Stores/DeskStore";
 import Login from "./Auth/Login";
 import Registration from "./Auth/Registration";
+import User from "./User/User";
 
 @observer
 class App extends Component{
@@ -26,6 +27,7 @@ class App extends Component{
                         <BrowserRouter>
 
                             <Route path='/project/:id' component={Desk}/>
+                            <Route path='/user/:login' component={User}/>
                             <Route exact path='/projects'>
                                 <Projects/>
                             </Route>

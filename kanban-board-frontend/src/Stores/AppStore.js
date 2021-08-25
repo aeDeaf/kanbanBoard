@@ -1,5 +1,6 @@
 import axios from "axios";
 import {action, makeObservable, observable} from "mobx";
+import UsersStore from "./UsersStore";
 
 axios.defaults.baseURL = 'http://localhost:8080'
 
@@ -10,20 +11,16 @@ class AppStore {
     @observable isLogin = false
 
     @action login(login, password) {
-        this.axiosConfig = {auth: {
-            'username': login,
-            'password': password
-        }}
+        this.axiosConfig = {
+            auth: {
+                'username': login,
+                'password': password
+            }
+        }
         return new Promise((resolve, reject) => {
-            axios
-                .get('/user/' + login, this.axiosConfig)
-                .then(response => {
-                    const userDTO = response.data.user
-                    const user = {}
-                    Object.keys(userDTO).forEach(key => {
-                        const newKey = key[0].toLowerCase() + key.substring(1)
-                        user[newKey] = userDTO[key]
-                    })
+            UsersStore
+                .getUserByLogin(login)
+                .then(user => {
                     this.currentUser = user
                     this.isLogin = true
                     resolve(true)

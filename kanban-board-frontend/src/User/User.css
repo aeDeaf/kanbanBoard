@@ -1,0 +1,15 @@
+.userGrid {
+    flex-grow: 1;
+}
+
+.userCard {
+    margin-top: 50px;
+    width: 100%;
+    height: 100%;
+}
+
+.userArea {
+    width: 100%;
+    min-height: 100vh;
+    height: 1px;
+}
