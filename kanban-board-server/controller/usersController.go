@@ -82,3 +82,20 @@ var CreateUser = func(w http.ResponseWriter, r *http.Request) {
 	utils.Respond(w, utils.Message(true, "User created"))
 
 }
+
+var UpdateUser = func(w http.ResponseWriter, r *http.Request) {
+	utils.Cors(w, r)
+	if r.Method == http.MethodOptions {
+		return
+	}
+
+	user := model.User{}
+	err := json.NewDecoder(r.Body).Decode(&user)
+
+	if err != nil {
+		panic(err)
+	}
+	database.UpdateUser(user)
+
+	utils.Respond(w, utils.Message(true, "User created"))
+}

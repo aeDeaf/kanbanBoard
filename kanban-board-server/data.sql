@@ -3,7 +3,9 @@ CREATE TABLE IF NOT EXISTS users
     id       INTEGER PRIMARY KEY,
     login    TEXT UNIQUE,
     password TEXT,
-    name     TEXT
+    name     TEXT,
+    description TEXT,
+    avatar BLOB
 );
 
 CREATE TABLE IF NOT EXISTS projects
@@ -39,10 +41,10 @@ CREATE TABLE IF NOT EXISTS tasks
 
 
 
-INSERT OR IGNORE INTO main.users (id, login, password, name)
-VALUES (1, 'admin', '$2a$10$DPb81W0X2hjX7/vLbWy1PO0PG30ELloYk6HJYkQtdvO3Zbk0krZ9q', 'Admin'),
-       (2, 'user1', '$2a$10$DPb81W0X2hjX7/vLbWy1PO0PG30ELloYk6HJYkQtdvO3Zbk0krZ9q', 'User 1'),
-       (3, 'user2', '$2a$10$DPb81W0X2hjX7/vLbWy1PO0PG30ELloYk6HJYkQtdvO3Zbk0krZ9q', 'User 2');
+INSERT OR IGNORE INTO main.users (id, login, password, name, description)
+VALUES (1, 'admin', '$2a$10$DPb81W0X2hjX7/vLbWy1PO0PG30ELloYk6HJYkQtdvO3Zbk0krZ9q', 'Admin', 'Admin'),
+       (2, 'user1', '$2a$10$DPb81W0X2hjX7/vLbWy1PO0PG30ELloYk6HJYkQtdvO3Zbk0krZ9q', 'User 1', 'User 1'),
+       (3, 'user2', '$2a$10$DPb81W0X2hjX7/vLbWy1PO0PG30ELloYk6HJYkQtdvO3Zbk0krZ9q', 'User 2', 'User 2');
 
 INSERT OR IGNORE INTO main.projects (id, name, description, manager_id)
 VALUES (1, 'Project 1', 'Project 1 description', 1),

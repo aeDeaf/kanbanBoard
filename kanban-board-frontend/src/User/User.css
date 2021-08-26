@@ -13,3 +13,15 @@
     min-height: 100vh;
     height: 1px;
 }
+
+.usersGridArea {
+    padding-top: 80px;
+    padding-left: 60px;
+    padding-right: 60px;
+    flex-grow: 1;
+}
+
+.usersGridContainer {
+    width: 100vw;
+    height: 100vh;
+}

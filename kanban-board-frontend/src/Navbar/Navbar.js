@@ -50,7 +50,7 @@ class TemporaryDrawer extends Component {
                                 <ListItemText primary='Projects'/>
                             </ListItem>
 
-                            <ListItem button key='Users' to='/users'>
+                            <ListItem button key='Users' component={Link} to='/users'>
                                 <ListItemText primary='Users'/>
                             </ListItem>
                         </List>

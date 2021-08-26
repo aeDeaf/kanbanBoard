@@ -16,6 +16,7 @@ import DeskStore from "./Stores/DeskStore";
 import Login from "./Auth/Login";
 import Registration from "./Auth/Registration";
 import User from "./User/User";
+import UsersList from "./User/UsersList";
 
 @observer
 class App extends Component{
@@ -30,6 +31,9 @@ class App extends Component{
                             <Route path='/user/:login' component={User}/>
                             <Route exact path='/projects'>
                                 <Projects/>
+                            </Route>
+                            <Route exact path='/users'>
+                                <UsersList/>
                             </Route>
                             <Route exact path='/'>
                                 <Redirect to='/projects'/>

@@ -6,6 +6,7 @@ axios.defaults.baseURL = 'http://localhost:8080'
 
 
 class UsersStore {
+    @observable users = []
 
     getUserByLogin(login) {
         return new Promise((resolve, reject) => {
@@ -26,9 +27,29 @@ class UsersStore {
         })
     }
 
-   /* constructor() {
+    @action getUsers() {
+        return new Promise((resolve, reject) => {
+            axios
+                .get('/user', AppStore.axiosConfig)
+                .then(response => {
+                    const usersDTO = response.data.users
+                    const users = []
+                    usersDTO.forEach(userDTO => {
+                        const user = {}
+                        Object.keys(userDTO).forEach(key => {
+                            const newKey = key[0].toLowerCase() + key.substring(1)
+                            user[newKey] = userDTO[key]
+                        })
+                        users.push(user)
+                    })
+                    this.users = users
+                })
+        })
+    }
+
+    constructor() {
         makeObservable(this)
-    }*/
+    }
 }
 
 export default new UsersStore()
