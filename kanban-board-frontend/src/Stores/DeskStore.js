@@ -10,6 +10,21 @@ class DeskStore {
 
     @observable backdropOpen = false
 
+    @observable isAddTaskDialogShown = false
+
+    @observable newTaskColumn = ''
+    @observable newTaskProjectId = -1
+
+    @action showAddTaskDialog(column, id) {
+        this.isAddTaskDialogShown = true
+        this.newTaskProjectId = id
+        this.newTaskColumn = column
+    }
+
+    @action hideAddTaskDialog() {
+        this.isAddTaskDialogShown = false
+    }
+
     @computed get style() {
         if (this.backdropOpen) {
             return {backgroundColor: null}
@@ -32,6 +47,18 @@ class DeskStore {
             })
             .catch(() => {
                 this.tasks[key].push(task)
+                alert("Can not update task")
+            })
+    }
+
+    @action assignTask(taskName, projectId) {
+        const {key, index} = this.getTask(taskName)
+        const task = {...this.tasks[key][index]}
+        this.saveAssignedTask(task, AppStore.currentUser.name, AppStore.currentUser.login, key)
+            .then(() => {
+                this.getTasksByProjectId(projectId)
+            })
+            .catch(() => {
                 alert("Can not update task")
             })
     }
@@ -79,6 +106,28 @@ class DeskStore {
             })
     }
 
+    @action createTask(task) {
+        const taskDTO = {}
+        Object.keys(task).forEach(key => {
+            const newKey = key[0].toUpperCase() + key.substring(1)
+            taskDTO[newKey] = task[key]
+        })
+        taskDTO['CreatorUserName'] = AppStore.currentUser.name
+        taskDTO['CreatorUserLogin'] = AppStore.currentUser.login
+        taskDTO['ProjectId'] = parseInt(this.newTaskProjectId)
+        return new Promise((resolve, reject) => {
+            axios
+                .post('/task', taskDTO, AppStore.axiosConfig)
+                .then(() => {
+                    resolve(true)
+                })
+                .catch(() => {
+                    reject(false)
+                })
+        })
+
+    }
+
     getTask(taskName) {
         const keys = Object.keys(this.tasks)
         for (let i = 0; i < keys.length; i++) {
@@ -100,6 +149,19 @@ class DeskStore {
             taskDTO[newKey] = task[key]
         })
         taskDTO['ColumnName'] = columnName
+        return axios
+            .put('/task', taskDTO, AppStore.axiosConfig)
+    }
+
+    saveAssignedTask(task, performerUserName, performerUserLogin, columnName) {
+        const taskDTO = {}
+        Object.keys(task).forEach(key => {
+            const newKey = key[0].toUpperCase() + key.substring(1)
+            taskDTO[newKey] = task[key]
+        })
+        taskDTO['ColumnName'] = columnName
+        taskDTO['PerformerUserName'] = performerUserName
+        taskDTO['PerformerUserLogin'] = performerUserLogin
         return axios
             .put('/task', taskDTO, AppStore.axiosConfig)
     }

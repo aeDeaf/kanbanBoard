@@ -99,3 +99,21 @@ var UpdateUser = func(w http.ResponseWriter, r *http.Request) {
 
 	utils.Respond(w, utils.Message(true, "User created"))
 }
+
+var UpdateUserAvatar = func(w http.ResponseWriter, r *http.Request) {
+	utils.Cors(w, r)
+	if r.Method == http.MethodOptions {
+		return
+	}
+	err := auth.VerifyRequest(w, r)
+	if err == nil {
+		err := r.ParseMultipartForm(0)
+		if err != nil {
+			panic(err)
+		}
+		for _, h := range r.MultipartForm.File["File"] {
+			file, _ := h.Open()
+			database.UpdateUserAvatar(r.FormValue("Login"), file)
+		}
+	}
+}

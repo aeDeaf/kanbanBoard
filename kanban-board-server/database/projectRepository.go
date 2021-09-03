@@ -9,7 +9,7 @@ import (
 func GetProjects() []model.Project {
 	db = Open()
 	res, err := db.Query(`
-	SELECT p.id, p.name, description, u.name, u.login FROM main.projects AS p
+	SELECT p.id, p.name, p.description, u.name, u.login FROM main.projects AS p
     	JOIN users u on p.manager_id = u.id
 	`)
 	Close()

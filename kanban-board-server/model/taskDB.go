@@ -1,13 +1,15 @@
 package model
 
-type Task struct {
+import "database/sql"
+
+type TaskDB struct {
 	Name               string
 	Description        string
 	CreatorUserName    string
 	CreatorUserLogin   string
-	PerformerUserName  string
-	PerformerUserLogin string
+	PerformerUserName  sql.NullString
+	PerformerUserLogin sql.NullString
 	ProjectId          int
 	ColumnName         string
-	Due                string
+	Due                sql.NullString
 }

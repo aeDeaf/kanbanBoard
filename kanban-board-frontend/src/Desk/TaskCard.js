@@ -12,8 +12,10 @@ import {
 } from "@material-ui/core";
 import React, {Component} from "react";
 import './Desk.css'
-import {takeInitials, isEmpty} from "../Utils/utils";
+import {takeInitials, isEmpty, base64toBlob} from "../Utils/utils";
 import {ExpandMore} from "@material-ui/icons";
+import {Link} from "react-router-dom";
+import DeskStore from "../Stores/DeskStore";
 
 const Types = {
     CARD: 'card'
@@ -75,19 +77,28 @@ class TaskCard extends Component {
         this.setState(newState)
     }
 
+    assignTask = () => {
+        console.log('Assign task')
+        DeskStore.assignTask(this.props.name, this.props.projectId)
+    }
+
     render() {
         const {isDragging, connectDragSource} = this.props
         return connectDragSource(
             <div className="card">
                 {isDragging ? null :
                     <Box border={1} borderRadius={5}>
-                        <Card>
+                        <Card style={{backgroundColor: 'pink'}}>
                             <CardHeader
-                                avatar={<Avatar>{
-                                    isEmpty(this.props.performerUserName) ?
-                                        takeInitials(this.props.creatorUserName) :
-                                        takeInitials(this.props.performerUserName)
-                                }</Avatar>}
+                                avatar={this.props.userAvatar === null ?
+                                    <Avatar>{
+                                        isEmpty(this.props.performerUserName) ?
+                                            takeInitials(this.props.creatorUserName) :
+                                            takeInitials(this.props.performerUserName)
+                                    }</Avatar>
+                                    :
+                                    <Avatar src={URL.createObjectURL(base64toBlob(this.props.userAvatar))}/>
+                                }
                                 title={this.props.name}
                                 subheader={'Task creator: ' + this.props.creatorUserName}
                                 subheaderTypographyProps={{align: 'left'}}
@@ -95,11 +106,14 @@ class TaskCard extends Component {
                             />
                             <Divider/>
                             <CardContent>
+                                {!isEmpty(this.props.due) ?
                                 <Typography variant='h4' align='left'>
                                     Due {this.props.due}
-                                </Typography>
+                                </Typography> : null}
                             </CardContent>
                             <CardActions disableSpacing>
+                                {isEmpty(this.props.performerUserLogin) ?
+                                    <Link onClick={this.assignTask}>Assign to me</Link> : null}
                                 <span className="expandBtn">
                                     <IconButton style={this.state.expandBtnStyle} onClick={this.onExpandBtnClicked}>
                                         <ExpandMore/>
@@ -108,7 +122,11 @@ class TaskCard extends Component {
                             </CardActions>
                             <Collapse in={this.state.expanded}>
                                 <CardContent>
-                                    {this.props.description}
+                                    {this.props.description.split('\n').map(line => {
+                                        return (
+                                            <Typography>{line}</Typography>
+                                        )
+                                    })}
                                 </CardContent>
                             </Collapse>
                         </Card>

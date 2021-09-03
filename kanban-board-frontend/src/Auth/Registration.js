@@ -3,6 +3,7 @@ import {Button, Card, CardActions, CardContent, CardHeader, TextField, Typograph
 import {Redirect} from "react-router-dom";
 import './Auth.css'
 import AppStore from "../Stores/AppStore";
+import UsersStore from "../Stores/UsersStore";
 class Registration extends Component {
     constructor(props) {
         super(props);
@@ -10,6 +11,7 @@ class Registration extends Component {
             name: '',
             login: '',
             password: '',
+            description: '',
             accountCreated: false
         }
     }
@@ -27,7 +29,7 @@ class Registration extends Component {
         const user = {...this.state}
         const newState = {...this.state}
         delete user.accountCreated
-        AppStore
+        UsersStore
             .createAccount(user)
             .then(() => {
                 newState.accountCreated = true
@@ -37,6 +39,7 @@ class Registration extends Component {
                 newState.login = ''
                 newState.password = ''
                 newState.name = ''
+                newState.description = ''
                 this.setState(newState)
                 alert('Can not create user')
             })
@@ -71,6 +74,15 @@ class Registration extends Component {
                                     label='Password'
                                     value={this.state.password}
                                     type='password'
+                                    onChange={this.handleTFChange}
+                                    fullWidth={true}
+                                />
+                                <TextField
+                                    id='description'
+                                    label='Description'
+                                    value={this.state.description}
+                                    multiline
+                                    rows={4}
                                     onChange={this.handleTFChange}
                                     fullWidth={true}
                                 />

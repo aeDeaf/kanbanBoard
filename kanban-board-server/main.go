@@ -31,6 +31,7 @@ func main() {
 	router.HandleFunc("/user/{login}", controller.GetUser).Methods("GET", http.MethodOptions)
 	router.HandleFunc("/user/{login}/performer", controller.GetTasksByPerformerUser).Methods("GET",
 		http.MethodOptions)
+	router.HandleFunc("/user/avatar", controller.UpdateUserAvatar).Methods(http.MethodPost, http.MethodOptions)
 	router.HandleFunc("/user", controller.CreateUser).Methods("POST", http.MethodOptions)
 	router.HandleFunc("/user", controller.UpdateUser).Methods(http.MethodPut, http.MethodOptions)
 

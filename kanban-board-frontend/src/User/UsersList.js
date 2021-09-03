@@ -3,7 +3,7 @@ import {observer} from "mobx-react";
 import {Avatar, Card, CardContent, CardHeader, Divider, Grid} from "@material-ui/core";
 import UsersStore from "../Stores/UsersStore";
 import './User.css'
-import {takeInitials} from "../Utils/utils";
+import {base64toBlob, takeInitials} from "../Utils/utils";
 import Navbar from "../Navbar/Navbar";
 import AppStore from "../Stores/AppStore";
 import {Link, Redirect} from "react-router-dom";
@@ -29,7 +29,9 @@ class UsersList extends Component {
                                 <Grid item xs={3}>
                                     <Card>
                                         <CardHeader
-                                            avatar={<Avatar>{takeInitials(user.name)}</Avatar>}
+                                            avatar={user.avatar === null ?
+                                                <Avatar>{takeInitials(user.name)}</Avatar> :
+                                                <Avatar src={URL.createObjectURL(base64toBlob(user.avatar))}/>}
                                             title={user.name}
                                             titleTypographyProps={
                                                 {

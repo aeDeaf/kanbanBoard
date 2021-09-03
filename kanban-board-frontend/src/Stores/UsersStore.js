@@ -36,15 +36,75 @@ class UsersStore {
                     const users = []
                     usersDTO.forEach(userDTO => {
                         const user = {}
+                        console.log(userDTO)
                         Object.keys(userDTO).forEach(key => {
                             const newKey = key[0].toLowerCase() + key.substring(1)
-                            user[newKey] = userDTO[key]
+                            if (key !== 'Avatar') {
+                                user[newKey] = userDTO[key]
+                            } else {
+                                if (userDTO[key] !== null) {
+                                    user[newKey] = userDTO[key]
+                                } else {
+                                    user[newKey] = null
+                                }
+
+                            }
+
                         })
                         users.push(user)
                     })
                     this.users = users
+                    resolve(users)
+                })
+                .catch(() => {
+                    reject({})
                 })
         })
+    }
+
+    createAccount(user) {
+        return new Promise((resolve, reject) => {
+            const userDTO = {}
+            Object.keys(user).forEach(key => {
+                const newKey = key[0].toUpperCase() + key.substring(1)
+                userDTO[newKey] = user[key]
+            })
+            axios
+                .post('/user', userDTO)
+                .then(() => resolve(true))
+                .catch(() => reject(false))
+        })
+    }
+
+    uploadAvatar(file, event, user) {
+        return new Promise((resolve, reject) => {
+            console.log('Upload started')
+            const header = AppStore.axiosConfig
+            header['headers'] = {
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data'
+            }
+            const userDTO = {}
+            Object.keys(user).forEach(key => {
+                const newKey = key[0].toUpperCase() + key.substring(1)
+                userDTO[newKey] = user[key]
+            })
+            const formData = new FormData()
+            user['Avatar'] = file
+            formData.append('File', file)
+            formData.append('Login', user.login)
+            axios.post('/user/avatar', formData, header)
+                .then(response => {
+                    event.target.value = null
+                    resolve(true)
+                    console.log('Avatar uploaded')
+                })
+                .catch(() => {
+                    reject(false)
+                    event.target.value = null
+                })
+        })
+
     }
 
     constructor() {

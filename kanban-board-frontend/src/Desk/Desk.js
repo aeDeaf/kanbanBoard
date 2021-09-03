@@ -8,6 +8,7 @@ import Column from "./Column";
 import Navbar from "../Navbar/Navbar";
 import AppStore from "../Stores/AppStore";
 import {Redirect} from "react-router-dom";
+import AddTaskDialog from "./AddTaskDialog";
 
 @observer
 class Desk extends Component {
@@ -28,12 +29,13 @@ class Desk extends Component {
                         <Grid container justifyContent="center" spacing={2} className="grid">
                             {DeskStore.columnsNames.map((value) => (
                                 <Grid key={value} item xs>
-                                    <Column name={value}/>
+                                    <Column name={value} id={this.props.match.params.id}/>
                                 </Grid>
                             ))}
 
                         </Grid>
                     }
+                    <AddTaskDialog/>
                 </div>
             );
         } else {
