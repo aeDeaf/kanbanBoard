@@ -1,3 +1,8 @@
+DROP TABLE main.users;
+DROP TABLE main.projects;
+DROP TABLE main.columns;
+DROP TABLE main.tasks;
+
 CREATE TABLE IF NOT EXISTS users
 (
     id       INTEGER PRIMARY KEY,

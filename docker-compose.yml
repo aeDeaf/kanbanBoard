@@ -1,0 +1,12 @@
+version: "3"
+services:
+  server:
+    build: ./kanban-board-server
+    ports:
+      - "8080:8080"
+    container_name: kanbanboard-server
+  client:
+    build: ./kanban-board-frontend
+    ports:
+      - "80:80"
+    container_name: kanbanboard-client
