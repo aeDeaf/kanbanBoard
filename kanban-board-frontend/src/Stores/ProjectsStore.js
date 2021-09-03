@@ -2,7 +2,7 @@ import {action, makeObservable, observable} from "mobx";
 import axios from "axios";
 import AppStore from "./AppStore";
 
-axios.defaults.baseURL = 'http://localhost:8080'
+axios.defaults.baseURL = 'http://51.158.165.23:8080'
 
 class ProjectsStore {
     @observable projects = []

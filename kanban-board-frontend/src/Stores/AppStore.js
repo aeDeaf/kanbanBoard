@@ -2,7 +2,7 @@ import axios from "axios";
 import {action, makeObservable, observable} from "mobx";
 import UsersStore from "./UsersStore";
 
-axios.defaults.baseURL = 'http://localhost:8080'
+axios.defaults.baseURL = 'http://51.158.165.23:8080'
 
 class AppStore {
     authData = {}

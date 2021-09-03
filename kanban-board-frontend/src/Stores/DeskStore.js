@@ -3,7 +3,7 @@ import axios from "axios";
 import {sleep} from "../Utils/utils";
 import AppStore from "./AppStore";
 
-axios.defaults.baseURL = 'http://localhost:8080'
+axios.defaults.baseURL = 'http://51.158.165.23:8080'
 
 class DeskStore {
     @observable tasks = {}
